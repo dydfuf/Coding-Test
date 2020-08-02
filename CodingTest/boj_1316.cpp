@@ -1,11 +1,3 @@
-//
-//  main.cpp
-//  CodingTest
-//
-//  Created by 최용렬 on 2020/07/01.
-//  Copyright © 2020 최용렬. All rights reserved.
-//
-
 #include <iostream>
 
 using namespace std;
