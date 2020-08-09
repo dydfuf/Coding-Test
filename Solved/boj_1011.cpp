@@ -10,18 +10,7 @@
  거리 : 9 -> 12321
  */
 /*
- if(dis > j*j && dis <= ((j+1)*(j+1) + j*j)/2){
-     cout << 2*j << endl;
-     break;
- }
- else if(dis > ((j+1)*(j+1) + j*j)/2 && dis < (j+1)*(j+1)){
-     cout << 2*j + 1 << endl;
-     break;
- }
- else if(dis == j*j){
-     cout << 2*j - 1 << endl;
-     break;
- }
+ 자료형 주의 int는 불가
  */
 
 #include <iostream>
