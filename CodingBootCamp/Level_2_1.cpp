@@ -72,6 +72,7 @@ void dfs(int h, int w){
 }
 
 void solution(){
+    
     for(int i = 0; i < height; i++){
         for(int j = 0; j < width; j++){
             if(graph[i][j] && !visited[i][j]){

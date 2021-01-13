@@ -1,56 +1,51 @@
-/*
-
- Level-3 정렬 된 두 배열의 중앙값
- 
- 두 개의 정렬 된 배열을 모두 살펴보고 중간 값을 반환하시오
- 단 런타임은 O(log(m+n))을 초과하면 안됩니다.
- 
- Num1.length = m
- Num2.length = n
- 0 <= m, n <= 1000
- -10^6 <= num1[i],num2[i] <= 10^6
- 
- https://stackoverrun.com/ko/q/12165944
- 
- */
-
-#include <iostream>
-#include <vector>
-#include <algorithm>
-
-
+#include <cstdio>
 using namespace std;
 
-#define MAX_VALUE 9999999
+int dx[4] = { 1, 0, -1, 0};
+int dy[4] = { 0, 1, 0, -1};
+int arr[501][501];
+int dp[501][501];
+int n, m;
 
-double getkth(vector<int> A, int aStart, vector<int> B, int bStart, int k){
-    if(aStart > (int)A.size() - 1 ) return B[bStart + k -1];
-    if(bStart > (int)B.size() - 1 ) return A[aStart + k -1];
-    if( k == 1) return min(A[aStart],B[bStart]);
-    
-    int aMid = MAX_VALUE, bMid = MAX_VALUE;
-    
-    if(aStart + k/2 -1 < (int)A.size() ) aMid = A[aStart + k/2 -1];
-    if(bStart + k/2 -1 < (int)B.size() ) bMid = B[bStart + k/2 -1];
-    
-    if( aMid < bMid)
-        return getkth(A, aStart + k/2, B, bStart, k - k/2);
-    else
-        return getkth(A, aStart, B, bStart + k/2, k - k/2);
-    
+int dfs(int y, int x) {
+    int k;
+
+    if (y == m && x == n) {
+        return 1;
+    }
+    else if (dp[y][x] == -1) {
+        dp[y][x] = 0;
+        for (k = 0; k < 4; k++) {
+            int newy = y + dy[k];
+            int newx = x + dx[k];
+            if (newx > 0 && newx <= n && newy > 0 && newy <= m && arr[y][x] > arr[newy][newx]) {
+                dp[y][x] += dfs(newy, newx);
+            }
+        }
+    }
+    return dp[y][x];
 }
 
-double solution(vector<int> A, vector<int> B){
-    int m = (int)A.size(), n = (int)B.size();
-    
-    int l = (m + n + 1)/2;
-    int r = (m + n + 2)/2;
-    return (getkth(A, 0, B, 0, l) + getkth(A, 0, B, 0, r)) / 2;
-}
+int main() {
 
-int main(int argc, const char * argv[]) {
-    vector<int> A = {1,2,100};
-    vector<int> B = {4,5,6};
-    
-    cout << solution(A,B);
+    scanf("%d %d", &m, &n);
+
+    int i, j;
+
+    for (i = 0; i <= m; i++) {
+        for (j = 0; j <= n; j++)  {
+            dp[i][j] = -1;
+            arr[i][j] = 10001;
+        }
+    }
+
+    for (i = 1; i <= m; i++) {
+        for (j = 1; j <= n; j++) {
+            scanf("%d", &arr[i][j]);
+        }
+    }
+
+    printf("%d\n", dfs(1,1));
+
+    return 0;
 }
