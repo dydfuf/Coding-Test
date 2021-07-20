@@ -1,24 +1,37 @@
+def calc(op, left, right):
+    if op == "+":
+        return left + right
+    elif op == "-":
+        return left - right
+    elif op == "*":
+        return left * right
+
+
 def solution(expression):
-    answer = 0
     result = []
     ori_atoms = []
+
     idx = 0
+
+    # 수식을 연산자와 피연산자로 나누기
+    # 100 + 200
     for i in range(len(expression)):
-        if expression[i] == "+":
+        if expression[i] == "+" or expression[i] == "-" or expression[i] == "*":
             ori_atoms.append(expression[idx:i])
             ori_atoms.append(expression[i])
             idx = i + 1
-        elif expression[i] == "-":
-            ori_atoms.append(expression[idx:i])
-            ori_atoms.append(expression[i])
-            idx = i + 1
-        elif expression[i] == "*":
-            ori_atoms.append(expression[idx:i])
-            ori_atoms.append(expression[i])
-            idx = i + 1
+        # elif expression[i] == "-":
+        #     ori_atoms.append(expression[idx:i])
+        #     ori_atoms.append(expression[i])
+        #     idx = i + 1
+        # elif expression[i] == "*":
+        #     ori_atoms.append(expression[idx:i])
+        #     ori_atoms.append(expression[i])
+        #     idx = i + 1
     ori_atoms.append(expression[idx:])
-    # + - *
-    temp = []
+    print(ori_atoms)
+
+    # 가능한 6가지 조합
     pri = [
         ["*", "+", "-"],
         ["*", "-", "+"],
@@ -27,12 +40,16 @@ def solution(expression):
         ["-", "+", "*"],
         ["-", "+", "*"]
     ]
+    '''
+    조합 만들
+    from itertools import permutations
+    pr = ['+','-','*']
+    pm = list(map(''.join, permutations(pr)))
+    '''
     for pr in pri:
         temp = []
         atoms = ori_atoms
         for a in pr:
-            # atoms = temp
-            # temp = []
             if a in atoms:
                 i = 0
                 while i < len(atoms):
@@ -47,6 +64,9 @@ def solution(expression):
                             temp.append(temp_pop + int(atoms[i + 1]))
                         elif a == "-":
                             temp.append(temp_pop - int(atoms[i + 1]))
+
+                        # temp.append(calc(a, temp_pop, int(atoms[i + 1])))
+
                         i += 2
 
                     elif atoms[i + 1] == a:
@@ -56,6 +76,9 @@ def solution(expression):
                             temp.append(int(atoms[i]) + int(atoms[i + 2]))
                         elif a == "-":
                             temp.append(int(atoms[i]) - int(atoms[i + 2]))
+
+                        # temp.append(calc(a, int(atoms[i], int(atoms[i + 2])))
+
                         i += 3
                     else:
                         temp.append(atoms[i])
@@ -66,6 +89,7 @@ def solution(expression):
             if not a == pr[-1]:
                 temp = []
 
+        # 최댓값 비교
         if not result:
             result.append(abs(temp.pop()))
         else:
@@ -74,11 +98,6 @@ def solution(expression):
                 result.append(abs(temp[0]))
         print(result)
 
-    # + * -
-    # - + *
-    # - * +
-    # * + -
-    # * - +
     return result[0]
 
 
