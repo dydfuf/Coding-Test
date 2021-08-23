@@ -1,62 +1,24 @@
-def split(input_arr):
-    half = len(input_arr) // 2
-
-    temp = []
-    result = []
-    for iidx in range(2):
-        for idx in range(2):
-            for i in range(half * iidx, half * (iidx + 1)):
-                for j in range(half * idx, half * (idx + 1)):
-                    temp.append(arr[i][j])
-            cl_t = temp.copy()
-            result.append(cl_t)
-            temp.clear()
-
-    if half == 1:
-        return input_arr
-
-    return result
-
-
-def check(check_arr):
-    checkNum = check_arr[0]
-    for item in check_arr:
-        if item != checkNum:
-            return False
-    return True
-
-
 def solution(arr):
-    answer = []
-    zero_cnt = 0
-    one_cnt = 0
-    for row in arr:
-        for item in row:
-            if item == 0:
-                zero_cnt += 1
-            else:
-                one_cnt += 1
+    answer = [0, 0]
+    length = len(arr)
 
-    # half = len(arr) // 2
-    # for iidx in range(2):
-    #     for idx in range(2):
-    #         for i in range(half*iidx, half*(iidx+1)):
-    #             for j in range(half*idx, half*(idx+1)):
-    #                 print(arr[i][j], end="")
-    #         print()
+    def divide(x, y, n):
+        default = arr[x][y]
+        for i in range(x, x + n):
+            for j in range(y, y+n):
+                if arr[i][j] != default:
 
-    splited = split(arr)
-    for aSplited in splited:
-        if check(aSplited):
-            if aSplited[0] == 0:
-                zero_cnt -= len(aSplited) - 1
-            else:
-                one_cnt -= len(aSplited) - 1
-        else:
-            NewSplit = split(aSplited)
-            print(NewSplit)
+                    nn = n // 2
+                    divide(x, y, nn)
+                    divide(x, y + nn, nn)
+                    divide(x+nn, y, nn)
+                    divide(x+nn, y+nn, nn)
+                    return
+        answer[default] += 1
 
-    return [zero_cnt, one_cnt]
+    divide(0, 0, length)
+
+    return answer
 
 
 if __name__ == "__main__":
